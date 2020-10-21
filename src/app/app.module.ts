@@ -5,8 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { BpmnModule } from './components/bpmn/bpmn.module';
 
 @NgModule({
   declarations: [
@@ -17,8 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatFormFieldModule,
-    MatInputModule
+    BpmnModule
   ],
   providers: [],
   bootstrap: [AppComponent]
