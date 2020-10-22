@@ -3,6 +3,7 @@
 </mat-toolbar>
 
 <div class="content">
-  <bpmn-viewer class="bpmn-diff__container"></bpmn-viewer>
-  <bpmn-viewer class="bpmn-diff__container"></bpmn-viewer>
+  <bpmn-viewer [side]="leftSide" class="bpmn-diff__container"></bpmn-viewer>
+  <bpmn-viewer [side]="rightSide" class="bpmn-diff__container"></bpmn-viewer>
+  <bpmn-diff-reader></bpmn-diff-reader>
 </div>

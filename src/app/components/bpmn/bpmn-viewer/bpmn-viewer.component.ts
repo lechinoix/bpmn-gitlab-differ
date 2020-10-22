@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { BPMNDiffService } from '../bpmn-diff.service';
 
 @Component({
   selector: 'bpmn-viewer',
   templateUrl: './bpmn-viewer.component.html',
   styleUrls: ['./bpmn-viewer.component.scss']
 })
-export class BpmnViewerComponent implements OnInit {
+export class BpmnViewerComponent {
+  @Input() side: 'left' | 'right';
 
-  constructor() { }
+  constructor(
+    public bpmnDiffService: BPMNDiffService,
+  ) { }
 
-  ngOnInit(): void {
+  setBpmnValue(value) {
+    this.bpmnDiffService.setBPMN(value, this.side);
   }
-
 }

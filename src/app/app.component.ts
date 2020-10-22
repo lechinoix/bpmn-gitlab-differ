@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'bpmn-gitlab-differ';
+  leftSide = 'left';
+  rightSide = 'right';
 }
