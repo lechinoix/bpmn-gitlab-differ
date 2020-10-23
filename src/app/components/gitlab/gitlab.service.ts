@@ -1,0 +1,94 @@
+/* eslint @typescript-eslint/no-non-null-assertion: "off" */
+
+import { Injectable } from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { map, switchMap } from 'rxjs/operators';
+import { forkJoin, Observable, of} from 'rxjs';
+import { environment } from '../../../environments/environment';
+
+type MergeRequestBranches = { targetBranch: string, sourceBranch: string };
+type Project = { id: string, mergeRequest: MergeRequestBranches };
+type Comparison = {
+  sourceBranch
+  diffs: Diff[]
+};
+type Diff = {
+  old_path: string,
+  new_path: string,
+  diff: string,
+  new_file: boolean,
+  renamed_file: boolean,
+  deleted_file: boolean
+};
+type BPMNContents = [string, string][];
+type GraphQLResponse<T> = { data: T };
+type File = { content: string };
+
+@Injectable({
+  providedIn: 'root'
+})
+export class GitlabService {
+  private token: string;
+  private options: {};
+  constructor(private http: HttpClient) {
+    this.token = environment.gitProvider.token;
+    this.options = { headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`) };
+  }
+
+  public getBPMNContentsForMergeRequest(repositoryPath: string, mergeRequestId: string): Observable<BPMNContents> {
+    return this.projectMergeRequest$(repositoryPath, mergeRequestId).pipe(
+      map(project => ({
+        ...project,
+        id: /gid:\/\/gitlab\/Project\/(\d+)/.exec(project.id)[1]
+      })),
+      switchMap(project => forkJoin([
+        of(project),
+        this.commitsDiff$(project.id, project.mergeRequest.sourceBranch, project.mergeRequest.targetBranch)
+      ])),
+      switchMap(([project, comparison]) => forkJoin(
+        [...comparison.diffs.filter(this.diffIsBPMN).map(diff => forkJoin([
+          this.fileContent$(project.id, diff.old_path, project.mergeRequest.sourceBranch),
+          this.fileContent$(project.id, diff.new_path, project.mergeRequest.targetBranch)
+        ])
+      )]))
+    );
+  }
+
+  private projectMergeRequest$(repositoryPath: string, mergeRequestId: string): Observable<Project> {
+    const query = `
+    {
+      project (fullPath: "${repositoryPath}") {
+        id
+        mergeRequest(iid: "${mergeRequestId}") {
+          targetBranch
+          sourceBranch
+        }
+      }
+    }`;
+    return this.http.post<GraphQLResponse<{ project: Project }>>(
+      environment.gitProvider.baseUrl + environment.gitProvider.graphQLPath,
+      { query },
+      this.options
+    ).pipe(map(result => result?.data?.project));
+  }
+
+  private commitsDiff$(projectId: string, sourceBranch: string, targetBranch: string): Observable<Comparison> {
+    return this.http.get<Comparison>(
+      `${environment.gitProvider.baseUrl}${environment.gitProvider.restPath}/projects/${projectId}/repository/compare?from=${sourceBranch}&to=${targetBranch}`,
+      this.options
+    );
+  }
+
+  private fileContent$(projectId: string, filePath: string, branchName: string): Observable<string> {
+   return this.http.get<File>(
+     `${environment.gitProvider.baseUrl + environment.gitProvider.restPath}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}?ref=${branchName}`,
+     this.options
+   ).pipe(map(result => atob(result.content)));
+  }
+
+  private diffIsBPMN = (diff: Diff) => /(.*)\.bpmn/.test(diff.old_path) && /(.*)\.bpmn/.test(diff.new_path);
+
+  public setToken(token: string): void {
+    this.token = token;
+  }
+}

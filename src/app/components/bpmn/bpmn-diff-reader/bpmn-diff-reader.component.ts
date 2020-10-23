@@ -16,6 +16,6 @@ export class BpmnDiffReaderComponent implements OnInit {
   ngOnInit(): void {
     this.bpmnDiffService.diffResult$.subscribe(diffResult => {
       this.diffResult = JSON.stringify(diffResult, null, 2);
-    })
+    });
   }
 }

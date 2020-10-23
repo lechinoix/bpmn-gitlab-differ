@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { BPMNDiffService } from '../bpmn-diff.service';
 import BpmnViewer from 'bpmn-js';
 
