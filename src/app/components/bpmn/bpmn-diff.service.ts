@@ -1,40 +1,42 @@
 /* eslint @typescript-eslint/no-non-null-assertion: "off" */
 
 import { Injectable } from '@angular/core';
-import { concatMap, tap, map } from 'rxjs/operators';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import {BehaviorSubject, forkJoin, from} from 'rxjs';
 
 import { diff } from 'bpmn-js-differ';
 import BpmnModdle from 'bpmn-moddle';
-
-type BPMNMap = {
-  right: String,
-  left: String
-};
 
 @Injectable({
   providedIn: 'root'
 })
 export class BPMNDiffService {
-  bpmnToCompare?: BPMNMap = {left: null, right: null};
+  bpmnToCompare?: any[] = [null, null];
   diffResult$: BehaviorSubject<{}> = new BehaviorSubject({});
 
-  async setBPMN(bpmn: String, side: 'left' | 'right'): Promise<void> {
-    this.bpmnToCompare[side] = !!bpmn ? await this.parseBpmn(bpmn) : null;
-    this.setDiffResult();
+  async setBpmns(bpmns: [string, string]): Promise<void> {
+    if (bpmns.every(Boolean)) {
+      forkJoin(
+        bpmns.map((bpmn) => from(this.parseBpmn(bpmn)))
+      ).subscribe((parsedBpmns) => {
+        this.bpmnToCompare = parsedBpmns;
+        this.setDiffResult();
+      });
+    }
   }
 
-  setDiffResult() {
-    this.diffResult$.next(Object.values(this.bpmnToCompare).every(Boolean)
-      ? diff(...Object.values(this.bpmnToCompare))
+  setDiffResult(): void {
+    this.diffResult$.next(this.bpmnToCompare.every(Boolean)
+      ? diff(...this.bpmnToCompare)
       : {}
     );
   }
 
-  parseBpmn(bpmn): Promise<String> {
+  parseBpmn(bpmn): Promise<any> {
     return new Promise((resolve, reject) => new BpmnModdle().fromXML(bpmn, {}, (err, element) => {
-      if (err) return reject(err);
+      if (err) {
+        return reject(err);
+      }
       resolve(element);
-    }))
+    }));
   }
 }

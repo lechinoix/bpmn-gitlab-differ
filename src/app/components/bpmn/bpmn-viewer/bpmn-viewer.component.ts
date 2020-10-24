@@ -1,32 +1,30 @@
 import { Component, Input, AfterViewInit } from '@angular/core';
-import { BPMNDiffService } from '../bpmn-diff.service';
 import BpmnViewer from 'bpmn-js';
 
 @Component({
-  selector: 'bpmn-viewer',
+  selector: 'app-bpmn-viewer',
   templateUrl: './bpmn-viewer.component.html',
   styleUrls: ['./bpmn-viewer.component.scss']
 })
 export class BpmnViewerComponent implements AfterViewInit {
+  bpmnValue: string;
   @Input() side: 'left' | 'right';
+  @Input() set bpmn(value: string) {
+    this.bpmnValue = value;
+    this.updateViewer(value);
+  }
   viewer: any;
 
-  constructor(
-    public bpmnDiffService: BPMNDiffService,
-  ) { }
-
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.viewer = new BpmnViewer({
       container: `.${this.side}-viewer`
     });
   }
 
-  setBpmnValue(value) {
-    this.bpmnDiffService.setBPMN(value, this.side);
-    this.updateViewer(value);
-  }
-
-  async updateViewer(bpmn) {
+  updateViewer = async (bpmn: string): Promise<void> => {
+    if (this.viewer == null) {
+      return;
+    }
     const { warnings } = await this.viewer.importXML(bpmn);
     console.log('success !', warnings);
     this.viewer.get('canvas').zoom('fit-viewport');

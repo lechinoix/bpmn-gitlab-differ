@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BPMNDiffService } from '../bpmn-diff.service';
 
 @Component({
-  selector: 'bpmn-diff-reader',
+  selector: 'app-bpmn-diff-reader',
   templateUrl: './bpmn-diff-reader.component.html',
   styleUrls: ['./bpmn-diff-reader.component.scss']
 })

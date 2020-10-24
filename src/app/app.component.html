@@ -1,9 +1,15 @@
-<mat-toolbar>
-  <span>BPMN Gitlab diff</span>
-</mat-toolbar>
-
-<div class="content">
-  <bpmn-viewer [side]="leftSide" class="bpmn-diff__container"></bpmn-viewer>
-  <bpmn-viewer [side]="rightSide" class="bpmn-diff__container"></bpmn-viewer>
-  <bpmn-diff-reader></bpmn-diff-reader>
+<div class="container">
+  <nav class="navbar">
+    <span>BPMN Gitlab diff</span>
+  </nav>
+  <div class="sidebar">
+    <ul *ngFor="let filePath of availableBpmnFilePaths">
+      <li>
+        <button (click)="changeSelectedFilePath(filePath)">{{ filePath }}</button>
+      </li>
+    </ul>
+  </div>
+  <app-bpmn-viewer class="diff-viewer" [bpmn]="selectedDiff[0]" [side]="leftSide"></app-bpmn-viewer>
+  <app-bpmn-viewer class="diff-viewer" [bpmn]="selectedDiff[1]" [side]="rightSide"></app-bpmn-viewer>
+  <app-bpmn-diff-reader class="diff-reader"></app-bpmn-diff-reader>
 </div>

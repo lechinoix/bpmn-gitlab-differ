@@ -20,7 +20,9 @@ type Diff = {
   renamed_file: boolean,
   deleted_file: boolean
 };
-type BPMNContents = [string, string][];
+export type BPMNDiffs = {
+  [filename: string]: [string, string]
+};
 type GraphQLResponse<T> = { data: T };
 type File = { content: string };
 
@@ -35,7 +37,7 @@ export class GitlabService {
     this.options = { headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`) };
   }
 
-  public getBPMNContentsForMergeRequest(repositoryPath: string, mergeRequestId: string): Observable<BPMNContents> {
+  public getBPMNContentsForMergeRequest(repositoryPath: string, mergeRequestId: string): Observable<BPMNDiffs> {
     return this.projectMergeRequest$(repositoryPath, mergeRequestId).pipe(
       map(project => ({
         ...project,
@@ -47,10 +49,18 @@ export class GitlabService {
       ])),
       switchMap(([project, comparison]) => forkJoin(
         [...comparison.diffs.filter(this.diffIsBPMN).map(diff => forkJoin([
+          of(diff.new_path),
           this.fileContent$(project.id, diff.old_path, project.mergeRequest.sourceBranch),
           this.fileContent$(project.id, diff.new_path, project.mergeRequest.targetBranch)
         ])
-      )]))
+      )])),
+      map((bpmnDiffs) =>
+        bpmnDiffs.reduce((acc, [filePath, ...diff]) => ({
+          ...acc,
+          [filePath]: diff
+        }),
+        {}
+      ))
     );
   }
 
@@ -74,7 +84,7 @@ export class GitlabService {
 
   private commitsDiff$(projectId: string, sourceBranch: string, targetBranch: string): Observable<Comparison> {
     return this.http.get<Comparison>(
-      `${environment.gitProvider.baseUrl}${environment.gitProvider.restPath}/projects/${projectId}/repository/compare?from=${sourceBranch}&to=${targetBranch}`,
+      `${environment.gitProvider.baseUrl}${environment.gitProvider.restPath}/projects/${projectId}/repository/compare?from=${targetBranch}&to=${sourceBranch}`,
       this.options
     );
   }
