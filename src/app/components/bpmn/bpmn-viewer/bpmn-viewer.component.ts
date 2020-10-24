@@ -1,5 +1,5 @@
 import { Component, Input, AfterViewInit } from '@angular/core';
-import BpmnViewer from 'bpmn-js';
+import NavigatedViewer from 'bpmn-js/lib/NavigatedViewer';
 
 @Component({
   selector: 'app-bpmn-viewer',
@@ -16,7 +16,7 @@ export class BpmnViewerComponent implements AfterViewInit {
   viewer: any;
 
   ngAfterViewInit(): void {
-    this.viewer = new BpmnViewer({
+    this.viewer = new NavigatedViewer({
       container: `.${this.side}-viewer`
     });
   }

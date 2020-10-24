@@ -22,7 +22,7 @@
 
 .diff-viewer {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   padding: 20px;
   grid-area: content-old;
   &:first-of-type {
