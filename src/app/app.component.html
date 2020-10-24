@@ -3,13 +3,18 @@
     <span>BPMN Gitlab diff</span>
   </nav>
   <div class="sidebar">
-    <ul *ngFor="let filePath of availableBpmnFilePaths">
-      <li>
-        <button (click)="changeSelectedFilePath(filePath)">{{ filePath }}</button>
-      </li>
-    </ul>
+    <ng-container *ngIf="pageReady | async ; else loader">
+      <ul *ngFor="let filePath of availableBpmnFilePaths">
+        <li>
+          <button (click)="changeSelectedFilePath(filePath)">{{ filePath }}</button>
+        </li>
+      </ul>
+    </ng-container>
   </div>
   <app-bpmn-viewer class="diff-viewer" [bpmn]="selectedDiff[0]" [side]="leftSide"></app-bpmn-viewer>
   <app-bpmn-viewer class="diff-viewer" [bpmn]="selectedDiff[1]" [side]="rightSide"></app-bpmn-viewer>
   <app-bpmn-diff-reader class="diff-reader"></app-bpmn-diff-reader>
+  <ng-template #loader>
+    <p>It is loading</p>
+  </ng-template>
 </div>

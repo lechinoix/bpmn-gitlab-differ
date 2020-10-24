@@ -2,8 +2,8 @@
 
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { map, switchMap } from 'rxjs/operators';
-import { forkJoin, Observable, of} from 'rxjs';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {BehaviorSubject, forkJoin, Observable, of} from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 type MergeRequestBranches = { targetBranch: string, sourceBranch: string };
@@ -32,6 +32,8 @@ type File = { content: string };
 export class GitlabService {
   private token: string;
   private options: {};
+  public isLoading$ = new BehaviorSubject<boolean>(false);
+
   constructor(private http: HttpClient) {
     this.token = environment.gitProvider.token;
     this.options = { headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`) };
@@ -39,6 +41,9 @@ export class GitlabService {
 
   public getBPMNContentsForMergeRequest(repositoryPath: string, mergeRequestId: string): Observable<BPMNDiffs> {
     return this.projectMergeRequest$(repositoryPath, mergeRequestId).pipe(
+      tap(() => {
+        this.isLoading$.next(true);
+      }),
       map(project => ({
         ...project,
         id: /gid:\/\/gitlab\/Project\/(\d+)/.exec(project.id)[1]
@@ -60,8 +65,11 @@ export class GitlabService {
           [filePath]: diff
         }),
         {}
-      ))
-    );
+      )),
+      tap(() => {
+        this.isLoading$.next(false);
+      })
+  );
   }
 
   private projectMergeRequest$(repositoryPath: string, mergeRequestId: string): Observable<Project> {

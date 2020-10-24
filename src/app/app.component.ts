@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BPMNDiffs, GitlabService} from './components/gitlab/gitlab.service';
 import {BPMNDiffService} from './components/bpmn/bpmn-diff.service';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +16,7 @@ export class AppComponent {
   selectedFilePath: string;
   leftSide = 'left';
   rightSide = 'right';
+  pageReady: Observable<boolean>;
 
   get selectedDiff(): [string, string] | null {
     return this.bpmnDiffs.hasOwnProperty(this.selectedFilePath)
@@ -26,6 +29,7 @@ export class AppComponent {
   }
 
   constructor(private activatedRoute: ActivatedRoute, private gitlabService: GitlabService, private bpmnDiffService: BPMNDiffService) {
+    this.pageReady = this.gitlabService.isLoading$.pipe(map(isLoading => !isLoading));
     this.activatedRoute.queryParams.subscribe(params => {
       const { mergeRequestId, projectFullPath } = params;
       if (!!mergeRequestId && !!projectFullPath) {

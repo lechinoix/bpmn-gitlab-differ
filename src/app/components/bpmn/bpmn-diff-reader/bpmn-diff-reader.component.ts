@@ -7,7 +7,7 @@ import { BPMNDiffService } from '../bpmn-diff.service';
   styleUrls: ['./bpmn-diff-reader.component.scss']
 })
 export class BpmnDiffReaderComponent implements OnInit {
-  diffResult: Object;
+  diffResult: {};
 
   constructor(
     public bpmnDiffService: BPMNDiffService,
