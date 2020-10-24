@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BPMNDiffs, GitlabService} from './components/gitlab/gitlab.service';
 import {BPMNDiffService} from './components/bpmn/bpmn-diff.service';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 
 @Component({

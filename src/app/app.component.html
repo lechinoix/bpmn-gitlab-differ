@@ -6,7 +6,7 @@
     <ng-container *ngIf="pageReady | async ; else loader">
       <ul *ngFor="let filePath of availableBpmnFilePaths">
         <li>
-          <button (click)="changeSelectedFilePath(filePath)">{{ filePath }}</button>
+          <button (click)="changeSelectedFilePath(filePath)">{{ filePath | extractFilename }}</button>
         </li>
       </ul>
     </ng-container>
