@@ -9,7 +9,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BpmnModule } from './components/bpmn/bpmn.module';
-import {ExtractFilenamePipe} from './components/filename-extractor.pipe';
+import {ExtractFilenamePipe} from './pipes/filename-extractor.pipe';
 
 @NgModule({
   declarations: [

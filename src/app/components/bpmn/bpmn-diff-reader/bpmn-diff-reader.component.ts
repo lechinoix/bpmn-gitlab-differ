@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BPMNDiffService } from '../bpmn-diff.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-bpmn-diff-reader',
@@ -7,15 +8,28 @@ import { BPMNDiffService } from '../bpmn-diff.service';
   styleUrls: ['./bpmn-diff-reader.component.scss']
 })
 export class BpmnDiffReaderComponent implements OnInit {
-  diffResult: {};
+  diffList: any[];
 
   constructor(
     public bpmnDiffService: BPMNDiffService,
   ) { }
 
   ngOnInit(): void {
-    this.bpmnDiffService.diffResult$.subscribe(diffResult => {
-      this.diffResult = JSON.stringify(diffResult, null, 2);
+    this.bpmnDiffService.diffResult$.pipe(
+      map(diffResult => this.flattenDiffs(diffResult))
+    ).subscribe(diffList => {
+      console.log('diffList', diffList);
+      this.diffList = diffList;
     });
+  }
+
+  flattenDiffs(diffResult): any[] {
+    const diffList = [];
+    for (const changeType of Object.keys(diffResult)) {
+      for (const name of Object.keys(diffResult[changeType])) {
+        diffList.push({ ...diffResult[changeType][name], changeType, name });
+      }
+    }
+    return diffList;
   }
 }

@@ -1,1 +1,5 @@
-<p>{{diffResult}}</p>
+<ul>
+    <li *ngFor="let diff of diffList">
+        name: {{ diff.name }}, change: {{ diff.changeType }}, type: {{ diff.$type }}
+    </li>
+</ul>

@@ -26,7 +26,7 @@ export class BPMNDiffService {
 
   setDiffResult(): void {
     this.diffResult$.next(this.bpmnToCompare.every(Boolean)
-      ? diff(...this.bpmnToCompare)
+      ? diff(...this.bpmnToCompare.reverse())
       : {}
     );
   }
