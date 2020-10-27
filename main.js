@@ -285,10 +285,8 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BpmnDiffReaderComponent", function() { return BpmnDiffReaderComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
-/* harmony import */ var _bpmn_diff_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../bpmn-diff.service */ "./src/app/components/bpmn/bpmn-diff.service.ts");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-
+/* harmony import */ var _bpmn_diff_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../bpmn-diff.service */ "./src/app/components/bpmn/bpmn-diff.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
 
 
 
@@ -305,24 +303,15 @@ function BpmnDiffReaderComponent_li_1_Template(rf, ctx) { if (rf & 1) {
 class BpmnDiffReaderComponent {
     constructor(bpmnDiffService) {
         this.bpmnDiffService = bpmnDiffService;
+        this.diffList = [];
     }
     ngOnInit() {
-        this.bpmnDiffService.diffResult$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(diffResult => this.flattenDiffs(diffResult))).subscribe(diffList => {
-            console.log('diffList', diffList);
-            this.diffList = diffList;
+        this.bpmnDiffService.diffResult$.subscribe(diffList => {
+            this.diffList = diffList.filter(({ changeType, $type }) => changeType !== '_layoutChanged' && $type !== 'bpmn:SequenceFlow');
         });
     }
-    flattenDiffs(diffResult) {
-        const diffList = [];
-        for (const changeType of Object.keys(diffResult)) {
-            for (const name of Object.keys(diffResult[changeType])) {
-                diffList.push(Object.assign(Object.assign({}, diffResult[changeType][name]), { changeType, name }));
-            }
-        }
-        return diffList;
-    }
 }
-BpmnDiffReaderComponent.ɵfac = function BpmnDiffReaderComponent_Factory(t) { return new (t || BpmnDiffReaderComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_bpmn_diff_service__WEBPACK_IMPORTED_MODULE_2__["BPMNDiffService"])); };
+BpmnDiffReaderComponent.ɵfac = function BpmnDiffReaderComponent_Factory(t) { return new (t || BpmnDiffReaderComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_bpmn_diff_service__WEBPACK_IMPORTED_MODULE_1__["BPMNDiffService"])); };
 BpmnDiffReaderComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: BpmnDiffReaderComponent, selectors: [["app-bpmn-diff-reader"]], decls: 2, vars: 1, consts: [[4, "ngFor", "ngForOf"]], template: function BpmnDiffReaderComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "ul");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, BpmnDiffReaderComponent_li_1_Template, 2, 3, "li", 0);
@@ -330,7 +319,7 @@ BpmnDiffReaderComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵ
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.diffList);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["NgForOf"]], styles: ["[_nghost-%COMP%] {\n  display: flex;\n  align-content: center;\n  justify-content: center;\n  width: 100%;\n  background-color: white;\n  padding: 20px;\n  box-sizing: border-box;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9icG1uL2JwbW4tZGlmZi1yZWFkZXIvYnBtbi1kaWZmLXJlYWRlci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGFBQUE7RUFDQSxxQkFBQTtFQUNBLHVCQUFBO0VBQ0EsV0FBQTtFQUNBLHVCQUFBO0VBQ0EsYUFBQTtFQUNBLHNCQUFBO0FBQ0YiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2JwbW4vYnBtbi1kaWZmLXJlYWRlci9icG1uLWRpZmYtcmVhZGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiOmhvc3Qge1xuICBkaXNwbGF5OiBmbGV4O1xuICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICB3aWR0aDogMTAwJTtcbiAgYmFja2dyb3VuZC1jb2xvcjogd2hpdGU7XG4gIHBhZGRpbmc6IDIwcHg7XG4gIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG59Il19 */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"]], styles: ["[_nghost-%COMP%] {\n  display: flex;\n  align-content: center;\n  justify-content: center;\n  width: 100%;\n  background-color: white;\n  padding: 20px;\n  box-sizing: border-box;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9icG1uL2JwbW4tZGlmZi1yZWFkZXIvYnBtbi1kaWZmLXJlYWRlci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGFBQUE7RUFDQSxxQkFBQTtFQUNBLHVCQUFBO0VBQ0EsV0FBQTtFQUNBLHVCQUFBO0VBQ0EsYUFBQTtFQUNBLHNCQUFBO0FBQ0YiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2JwbW4vYnBtbi1kaWZmLXJlYWRlci9icG1uLWRpZmYtcmVhZGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiOmhvc3Qge1xuICBkaXNwbGF5OiBmbGV4O1xuICBhbGlnbi1jb250ZW50OiBjZW50ZXI7XG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICB3aWR0aDogMTAwJTtcbiAgYmFja2dyb3VuZC1jb2xvcjogd2hpdGU7XG4gIHBhZGRpbmc6IDIwcHg7XG4gIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG59Il19 */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](BpmnDiffReaderComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -338,7 +327,7 @@ BpmnDiffReaderComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵ
                 templateUrl: './bpmn-diff-reader.component.html',
                 styleUrls: ['./bpmn-diff-reader.component.scss']
             }]
-    }], function () { return [{ type: _bpmn_diff_service__WEBPACK_IMPORTED_MODULE_2__["BPMNDiffService"] }]; }, null); })();
+    }], function () { return [{ type: _bpmn_diff_service__WEBPACK_IMPORTED_MODULE_1__["BPMNDiffService"] }]; }, null); })();
 
 
 /***/ }),
@@ -368,7 +357,10 @@ __webpack_require__.r(__webpack_exports__);
 class BPMNDiffService {
     constructor() {
         this.bpmnToCompare = [null, null];
-        this.diffResult$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]({});
+        this.diffResult$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
+        this.getNewDiff = () => {
+            return this.flattenDiffs(Object(bpmn_js_differ__WEBPACK_IMPORTED_MODULE_3__["diff"])(...this.bpmnToCompare.reverse()));
+        };
     }
     setBpmns(bpmns) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
@@ -382,8 +374,8 @@ class BPMNDiffService {
     }
     setDiffResult() {
         this.diffResult$.next(this.bpmnToCompare.every(Boolean)
-            ? Object(bpmn_js_differ__WEBPACK_IMPORTED_MODULE_3__["diff"])(...this.bpmnToCompare.reverse())
-            : {});
+            ? this.getNewDiff()
+            : []);
     }
     parseBpmn(bpmn) {
         return new Promise((resolve, reject) => new bpmn_moddle__WEBPACK_IMPORTED_MODULE_4__["default"]().fromXML(bpmn, {}, (err, element) => {
@@ -392,6 +384,15 @@ class BPMNDiffService {
             }
             resolve(element);
         }));
+    }
+    flattenDiffs(diffResult) {
+        const diffList = [];
+        for (const changeType of Object.keys(diffResult)) {
+            for (const name of Object.keys(diffResult[changeType])) {
+                diffList.push(Object.assign(Object.assign({}, diffResult[changeType][name]), { changeType, name }));
+            }
+        }
+        return diffList;
     }
 }
 BPMNDiffService.ɵfac = function BPMNDiffService_Factory(t) { return new (t || BPMNDiffService)(); };
@@ -419,20 +420,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var bpmn_js_lib_NavigatedViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmn-js/lib/NavigatedViewer */ "./node_modules/bpmn-js/lib/NavigatedViewer.js");
+/* harmony import */ var _bpmn_diff_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bpmn-diff.service */ "./src/app/components/bpmn/bpmn-diff.service.ts");
+
 
 
 
 
 class BpmnViewerComponent {
-    constructor() {
+    constructor(bpmnDiffService) {
+        this.bpmnDiffService = bpmnDiffService;
         this.updateViewer = (bpmn) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             if (this.viewer == null) {
                 return;
             }
-            const { warnings } = yield this.viewer.importXML(bpmn);
-            console.log('success !', warnings);
+            yield this.viewer.importXML(bpmn);
             this.viewer.get('canvas').zoom('fit-viewport');
         });
+        this.applyVisualToElement = (elementId, effectClass) => {
+            try {
+                this.viewer.get('canvas').addMarker(elementId, effectClass);
+            }
+            catch (e) {
+                console.warn(e);
+            }
+        };
     }
     set bpmn(value) {
         this.bpmnValue = value;
@@ -442,9 +453,14 @@ class BpmnViewerComponent {
         this.viewer = new bpmn_js_lib_NavigatedViewer__WEBPACK_IMPORTED_MODULE_2__["default"]({
             container: `.${this.side}-viewer`
         });
+        this.bpmnDiffService.diffResult$.subscribe(diffResult => {
+            if (Array.isArray(diffResult)) {
+                diffResult.forEach(({ id, changeType }) => this.applyVisualToElement(id, changeType));
+            }
+        });
     }
 }
-BpmnViewerComponent.ɵfac = function BpmnViewerComponent_Factory(t) { return new (t || BpmnViewerComponent)(); };
+BpmnViewerComponent.ɵfac = function BpmnViewerComponent_Factory(t) { return new (t || BpmnViewerComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_bpmn_diff_service__WEBPACK_IMPORTED_MODULE_3__["BPMNDiffService"])); };
 BpmnViewerComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: BpmnViewerComponent, selectors: [["app-bpmn-viewer"]], inputs: { side: "side", bpmn: "bpmn" }, decls: 1, vars: 3, template: function BpmnViewerComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](0, "div");
     } if (rf & 2) {
@@ -457,7 +473,7 @@ BpmnViewerComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefi
                 templateUrl: './bpmn-viewer.component.html',
                 styleUrls: ['./bpmn-viewer.component.scss']
             }]
-    }], null, { side: [{
+    }], function () { return [{ type: _bpmn_diff_service__WEBPACK_IMPORTED_MODULE_3__["BPMNDiffService"] }]; }, { side: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
         }], bpmn: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
