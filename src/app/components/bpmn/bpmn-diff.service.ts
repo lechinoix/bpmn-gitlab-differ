@@ -6,12 +6,19 @@ import {BehaviorSubject, forkJoin, from} from 'rxjs';
 import { diff } from 'bpmn-js-differ';
 import BpmnModdle from 'bpmn-moddle';
 
+type Diff = {
+  $type: string,
+  changeType: string,
+  id: string,
+  name: string
+};
+
 @Injectable({
   providedIn: 'root'
 })
 export class BPMNDiffService {
   bpmnToCompare?: any[] = [null, null];
-  diffResult$: BehaviorSubject<{}> = new BehaviorSubject({});
+  diffResult$: BehaviorSubject<Diff[]> = new BehaviorSubject([]);
 
   async setBpmns(bpmns: [string, string]): Promise<void> {
     if (bpmns.every(Boolean)) {
@@ -26,8 +33,8 @@ export class BPMNDiffService {
 
   setDiffResult(): void {
     this.diffResult$.next(this.bpmnToCompare.every(Boolean)
-      ? diff(...this.bpmnToCompare.reverse())
-      : {}
+      ? this.getNewDiff()
+      : []
     );
   }
 
@@ -38,5 +45,19 @@ export class BPMNDiffService {
       }
       resolve(element);
     }));
+  }
+
+  getNewDiff = (): Diff[] => {
+    return this.flattenDiffs(diff(...this.bpmnToCompare.reverse()));
+  }
+
+  flattenDiffs(diffResult): any[] {
+    const diffList = [];
+    for (const changeType of Object.keys(diffResult)) {
+      for (const name of Object.keys(diffResult[changeType])) {
+        diffList.push({ ...diffResult[changeType][name], changeType, name });
+      }
+    }
+    return diffList;
   }
 }

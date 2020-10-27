@@ -1,5 +1,6 @@
 import { Component, Input, AfterViewInit } from '@angular/core';
 import NavigatedViewer from 'bpmn-js/lib/NavigatedViewer';
+import { BPMNDiffService } from '../bpmn-diff.service';
 
 @Component({
   selector: 'app-bpmn-viewer',
@@ -15,9 +16,18 @@ export class BpmnViewerComponent implements AfterViewInit {
   }
   viewer: any;
 
+  constructor(
+    public bpmnDiffService: BPMNDiffService,
+  ) { }
+
   ngAfterViewInit(): void {
     this.viewer = new NavigatedViewer({
       container: `.${this.side}-viewer`
+    });
+    this.bpmnDiffService.diffResult$.subscribe(diffResult => {
+      if (Array.isArray(diffResult)) {
+        diffResult.forEach(({ id, changeType }) => this.applyVisualToElement(id, changeType));
+      }
     });
   }
 
@@ -25,8 +35,15 @@ export class BpmnViewerComponent implements AfterViewInit {
     if (this.viewer == null) {
       return;
     }
-    const { warnings } = await this.viewer.importXML(bpmn);
-    console.log('success !', warnings);
+    await this.viewer.importXML(bpmn);
     this.viewer.get('canvas').zoom('fit-viewport');
+  }
+
+  applyVisualToElement = (elementId: string, effectClass: string): void => {
+    try {
+      this.viewer.get('canvas').addMarker(elementId, effectClass);
+    } catch (e) {
+      console.warn(e);
+    }
   }
 }
