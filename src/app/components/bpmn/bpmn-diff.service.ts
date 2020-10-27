@@ -48,7 +48,7 @@ export class BPMNDiffService {
   }
 
   getNewDiff = (): Diff[] => {
-    return this.flattenDiffs(diff(...this.bpmnToCompare.reverse()));
+    return this.flattenDiffs(diff(...this.bpmnToCompare));
   }
 
   flattenDiffs(diffResult): any[] {

@@ -11,8 +11,8 @@
       </ul>
     </ng-container>
   </div>
-  <app-bpmn-viewer class="diff-viewer" [bpmn]="selectedDiff[0]" [side]="leftSide"></app-bpmn-viewer>
-  <app-bpmn-viewer class="diff-viewer" [bpmn]="selectedDiff[1]" [side]="rightSide"></app-bpmn-viewer>
+  <app-bpmn-viewer class="diff-viewer" [bpmn]="selectedDiff[1]" [version]="newVersion"></app-bpmn-viewer>
+  <app-bpmn-viewer class="diff-viewer" [bpmn]="selectedDiff[0]" [version]="oldVersion"></app-bpmn-viewer>
   <app-bpmn-diff-reader class="diff-reader"></app-bpmn-diff-reader>
   <ng-template #loader>
     <p>It is loading</p>

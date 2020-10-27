@@ -14,8 +14,8 @@ export class AppComponent {
   title = 'bpmn-gitlab-differ';
   bpmnDiffs: BPMNDiffs = {};
   selectedFilePath: string;
-  leftSide = 'left';
-  rightSide = 'right';
+  oldVersion = 'old';
+  newVersion = 'new';
   pageReady: Observable<boolean>;
 
   get selectedDiff(): [string, string] | null {

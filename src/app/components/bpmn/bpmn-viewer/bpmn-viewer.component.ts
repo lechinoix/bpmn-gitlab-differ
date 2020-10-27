@@ -9,7 +9,7 @@ import { BPMNDiffService } from '../bpmn-diff.service';
 })
 export class BpmnViewerComponent implements AfterViewInit {
   bpmnValue: string;
-  @Input() side: 'left' | 'right';
+  @Input() version: 'old' | 'new';
   @Input() set bpmn(value: string) {
     this.bpmnValue = value;
     this.updateViewer(value);
@@ -22,7 +22,7 @@ export class BpmnViewerComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.viewer = new NavigatedViewer({
-      container: `.${this.side}-viewer`
+      container: `.${this.version}-viewer`
     });
     this.bpmnDiffService.diffResult$.subscribe(diffResult => {
       if (Array.isArray(diffResult)) {
