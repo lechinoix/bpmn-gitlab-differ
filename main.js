@@ -122,8 +122,8 @@ class AppComponent {
         this.bpmnDiffService = bpmnDiffService;
         this.title = 'bpmn-gitlab-differ';
         this.bpmnDiffs = {};
-        this.leftSide = 'left';
-        this.rightSide = 'right';
+        this.oldVersion = 'old';
+        this.newVersion = 'new';
         this.setBpmnDiffs = (bpmnDiffs) => {
             this.bpmnDiffs = bpmnDiffs;
         };
@@ -157,7 +157,7 @@ class AppComponent {
     }
 }
 AppComponent.ɵfac = function AppComponent_Factory(t) { return new (t || AppComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_components_gitlab_gitlab_service__WEBPACK_IMPORTED_MODULE_3__["GitlabService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_components_bpmn_bpmn_diff_service__WEBPACK_IMPORTED_MODULE_4__["BPMNDiffService"])); };
-AppComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: AppComponent, selectors: [["app-root"]], decls: 12, vars: 8, consts: [[1, "container"], [1, "navbar"], [1, "sidebar"], [4, "ngIf", "ngIfElse"], [1, "diff-viewer", 3, "bpmn", "side"], [1, "diff-reader"], ["loader", ""], [4, "ngFor", "ngForOf"], [3, "click"]], template: function AppComponent_Template(rf, ctx) { if (rf & 1) {
+AppComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: AppComponent, selectors: [["app-root"]], decls: 12, vars: 8, consts: [[1, "container"], [1, "navbar"], [1, "sidebar"], [4, "ngIf", "ngIfElse"], [1, "diff-viewer", 3, "bpmn", "version"], [1, "diff-reader"], ["loader", ""], [4, "ngFor", "ngForOf"], [3, "click"]], template: function AppComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "nav", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "span");
@@ -178,9 +178,9 @@ AppComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCompo
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind1"](6, 6, ctx.pageReady))("ngIfElse", _r1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("bpmn", ctx.selectedDiff[0])("side", ctx.leftSide);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("bpmn", ctx.selectedDiff[1])("version", ctx.newVersion);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("bpmn", ctx.selectedDiff[1])("side", ctx.rightSide);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("bpmn", ctx.selectedDiff[0])("version", ctx.oldVersion);
     } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], _components_bpmn_bpmn_viewer_bpmn_viewer_component__WEBPACK_IMPORTED_MODULE_6__["BpmnViewerComponent"], _components_bpmn_bpmn_diff_reader_bpmn_diff_reader_component__WEBPACK_IMPORTED_MODULE_7__["BpmnDiffReaderComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["AsyncPipe"], _pipes_filename_extractor_pipe__WEBPACK_IMPORTED_MODULE_8__["ExtractFilenamePipe"]], styles: [".navbar[_ngcontent-%COMP%] {\n  grid-area: header;\n  border-bottom: 1px #ccc solid;\n  display: flex;\n  background-color: #eee;\n  justify-content: flex-start;\n  align-items: center;\n  padding: 20px;\n  z-index: 2;\n  box-shadow: 1px 1px 5px #ccc;\n}\n\n.sidebar[_ngcontent-%COMP%] {\n  grid-area: sidebar;\n  overflow: scroll;\n  border-right: 1px #ccc solid;\n  z-index: 1;\n  padding: 20px;\n  background-color: #eee;\n  box-shadow: 1px 1px 5px #ccc;\n}\n\n.diff-viewer[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: stretch;\n  padding: 20px;\n  grid-area: content-old;\n}\n\n.diff-viewer[_ngcontent-%COMP%]:first-of-type {\n  grid-area: content-new;\n}\n\n.diff-reader[_ngcontent-%COMP%] {\n  grid-area: footer;\n  overflow-y: scroll;\n  border-top: 1px #ccc solid;\n}\n\n.container[_ngcontent-%COMP%] {\n  display: grid;\n  width: 100%;\n  height: 100%;\n  grid-template-columns: 250px auto;\n  grid-template-rows: 60px auto auto 100px;\n  grid-template-areas: \"header header\" \"sidebar content-old\" \"sidebar content-new\" \"sidebar footer\";\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYXBwLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsaUJBQUE7RUFDQSw2QkFBQTtFQUNBLGFBQUE7RUFDQSxzQkFBQTtFQUNBLDJCQUFBO0VBQ0EsbUJBQUE7RUFDQSxhQUFBO0VBQ0EsVUFBQTtFQUNBLDRCQUFBO0FBQ0Y7O0FBRUE7RUFDRSxrQkFBQTtFQUNBLGdCQUFBO0VBQ0EsNEJBQUE7RUFDQSxVQUFBO0VBQ0EsYUFBQTtFQUNBLHNCQUFBO0VBQ0EsNEJBQUE7QUFDRjs7QUFFQTtFQUNFLGFBQUE7RUFDQSxvQkFBQTtFQUNBLGFBQUE7RUFDQSxzQkFBQTtBQUNGOztBQUFFO0VBQ0Usc0JBQUE7QUFFSjs7QUFFQTtFQUNFLGlCQUFBO0VBQ0Esa0JBQUE7RUFDQSwwQkFBQTtBQUNGOztBQUVBO0VBQ0UsYUFBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0VBQ0EsaUNBQUE7RUFDQSx3Q0FBQTtFQUNBLGlHQUNFO0FBQUoiLCJmaWxlIjoic3JjL2FwcC9hcHAuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubmF2YmFyIHtcbiAgZ3JpZC1hcmVhOiBoZWFkZXI7XG4gIGJvcmRlci1ib3R0b206IDFweCAjY2NjIHNvbGlkO1xuICBkaXNwbGF5OiBmbGV4O1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjZWVlO1xuICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIHBhZGRpbmc6IDIwcHg7XG4gIHotaW5kZXg6IDI7XG4gIGJveC1zaGFkb3c6IDFweCAxcHggNXB4ICNjY2M7XG59XG5cbi5zaWRlYmFyIHtcbiAgZ3JpZC1hcmVhOiBzaWRlYmFyO1xuICBvdmVyZmxvdzogc2Nyb2xsO1xuICBib3JkZXItcmlnaHQ6IDFweCAjY2NjIHNvbGlkO1xuICB6LWluZGV4OiAxO1xuICBwYWRkaW5nOiAyMHB4O1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjZWVlO1xuICBib3gtc2hhZG93OiAxcHggMXB4IDVweCAjY2NjO1xufVxuXG4uZGlmZi12aWV3ZXIge1xuICBkaXNwbGF5OiBmbGV4O1xuICBhbGlnbi1pdGVtczogc3RyZXRjaDtcbiAgcGFkZGluZzogMjBweDtcbiAgZ3JpZC1hcmVhOiBjb250ZW50LW9sZDtcbiAgJjpmaXJzdC1vZi10eXBlIHtcbiAgICBncmlkLWFyZWE6IGNvbnRlbnQtbmV3O1xuICB9XG59XG5cbi5kaWZmLXJlYWRlciB7XG4gIGdyaWQtYXJlYTogZm9vdGVyO1xuICBvdmVyZmxvdy15OiBzY3JvbGw7XG4gIGJvcmRlci10b3A6IDFweCAjY2NjIHNvbGlkO1xufVxuXG4uY29udGFpbmVyIHtcbiAgZGlzcGxheTogZ3JpZDtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogMTAwJTtcbiAgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAyNTBweCBhdXRvO1xuICBncmlkLXRlbXBsYXRlLXJvd3M6IDYwcHggYXV0byBhdXRvIDEwMHB4O1xuICBncmlkLXRlbXBsYXRlLWFyZWFzOlxuICAgIFwiaGVhZGVyIGhlYWRlclwiXG4gICAgXCJzaWRlYmFyIGNvbnRlbnQtb2xkXCJcbiAgICBcInNpZGViYXIgY29udGVudC1uZXdcIlxuICAgIFwic2lkZWJhciBmb290ZXJcIjtcbn1cbiJdfQ== */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AppComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
@@ -359,7 +359,7 @@ class BPMNDiffService {
         this.bpmnToCompare = [null, null];
         this.diffResult$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
         this.getNewDiff = () => {
-            return this.flattenDiffs(Object(bpmn_js_differ__WEBPACK_IMPORTED_MODULE_3__["diff"])(...this.bpmnToCompare.reverse()));
+            return this.flattenDiffs(Object(bpmn_js_differ__WEBPACK_IMPORTED_MODULE_3__["diff"])(...this.bpmnToCompare));
         };
     }
     setBpmns(bpmns) {
@@ -421,6 +421,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var bpmn_js_lib_NavigatedViewer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmn-js/lib/NavigatedViewer */ "./node_modules/bpmn-js/lib/NavigatedViewer.js");
 /* harmony import */ var _bpmn_diff_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bpmn-diff.service */ "./src/app/components/bpmn/bpmn-diff.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
+
 
 
 
@@ -451,7 +453,7 @@ class BpmnViewerComponent {
     }
     ngAfterViewInit() {
         this.viewer = new bpmn_js_lib_NavigatedViewer__WEBPACK_IMPORTED_MODULE_2__["default"]({
-            container: `.${this.side}-viewer`
+            container: `.${this.version}-viewer`
         });
         this.bpmnDiffService.diffResult$.subscribe(diffResult => {
             if (Array.isArray(diffResult)) {
@@ -461,11 +463,18 @@ class BpmnViewerComponent {
     }
 }
 BpmnViewerComponent.ɵfac = function BpmnViewerComponent_Factory(t) { return new (t || BpmnViewerComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_bpmn_diff_service__WEBPACK_IMPORTED_MODULE_3__["BPMNDiffService"])); };
-BpmnViewerComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: BpmnViewerComponent, selectors: [["app-bpmn-viewer"]], inputs: { side: "side", bpmn: "bpmn" }, decls: 1, vars: 3, template: function BpmnViewerComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](0, "div");
+BpmnViewerComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: BpmnViewerComponent, selectors: [["app-bpmn-viewer"]], inputs: { version: "version", bpmn: "bpmn" }, decls: 4, vars: 6, template: function BpmnViewerComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "p");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpipe"](2, "uppercase");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](3, "div");
     } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵclassMapInterpolate1"]("diff-section ", ctx.side + "-viewer", "");
-    } }, styles: [".diff-section[_ngcontent-%COMP%] {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9icG1uL2JwbW4tdmlld2VyL2JwbW4tdmlld2VyLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsV0FBQTtBQUNGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9icG1uL2JwbW4tdmlld2VyL2JwbW4tdmlld2VyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmRpZmYtc2VjdGlvbiB7XG4gIHdpZHRoOiAxMDAlO1xufVxuIl19 */"] });
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpipeBind1"](2, 4, ctx.version));
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵclassMapInterpolate1"]("diff-section ", ctx.version + "-viewer", "");
+    } }, pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_4__["UpperCasePipe"]], styles: [".diff-section[_ngcontent-%COMP%] {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9icG1uL2JwbW4tdmlld2VyL2JwbW4tdmlld2VyLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsV0FBQTtBQUNGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9icG1uL2JwbW4tdmlld2VyL2JwbW4tdmlld2VyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmRpZmYtc2VjdGlvbiB7XG4gIHdpZHRoOiAxMDAlO1xufVxuIl19 */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](BpmnViewerComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"],
         args: [{
@@ -473,7 +482,7 @@ BpmnViewerComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefi
                 templateUrl: './bpmn-viewer.component.html',
                 styleUrls: ['./bpmn-viewer.component.scss']
             }]
-    }], function () { return [{ type: _bpmn_diff_service__WEBPACK_IMPORTED_MODULE_3__["BPMNDiffService"] }]; }, { side: [{
+    }], function () { return [{ type: _bpmn_diff_service__WEBPACK_IMPORTED_MODULE_3__["BPMNDiffService"] }]; }, { version: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
         }], bpmn: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"]
