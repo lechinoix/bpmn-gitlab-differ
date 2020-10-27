@@ -31,9 +31,13 @@ export class AppComponent {
   constructor(private activatedRoute: ActivatedRoute, private gitlabService: GitlabService, private bpmnDiffService: BPMNDiffService) {
     this.pageReady = this.gitlabService.isLoading$.pipe(map(isLoading => !isLoading));
     this.activatedRoute.queryParams.subscribe(params => {
-      const { mergeRequestId, projectFullPath } = params;
-      if (!!mergeRequestId && !!projectFullPath) {
-        this.gitlabService.getBPMNContentsForMergeRequest(projectFullPath, mergeRequestId)
+      const { mergeRequestId, repositoryPath, gitlabBaseUrl, gitToken } = params;
+      if (!!gitToken) {
+        this.setGitToken(gitToken);
+      }
+      if (!!mergeRequestId && !!repositoryPath && !!gitlabBaseUrl) {
+        this.gitlabService.setbaseURL(gitlabBaseUrl);
+        this.gitlabService.getBPMNContentsForMergeRequest(repositoryPath, mergeRequestId)
           .subscribe(this.setBpmnDiffs);
       }
     });
@@ -46,5 +50,9 @@ export class AppComponent {
   changeSelectedFilePath = (filePath: string): void => {
     this.selectedFilePath = filePath;
     this.bpmnDiffService.setBpmns(this.bpmnDiffs[filePath]);
+  }
+
+  setGitToken = (gitToken: string) => {
+    localStorage.gitToken = gitToken;
   }
 }

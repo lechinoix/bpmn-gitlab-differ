@@ -2,15 +2,11 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { GITLAB_TOKEN } from './environment.secret';
-
 export const environment = {
   production: false,
   gitProvider: {
-    baseUrl: 'http://repo1.laforge.cloud.bpifrance.fr',
     graphQLPath: '/api/graphql',
-    restPath: '/api/v4',
-    token: GITLAB_TOKEN
+    restPath: '/api/v4'
   }
 };
 

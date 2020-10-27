@@ -2,8 +2,8 @@
 
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, map, switchMap, tap} from 'rxjs/operators';
-import {BehaviorSubject, forkJoin, Observable, of} from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 type MergeRequestBranches = { targetBranch: string, sourceBranch: string };
@@ -31,11 +31,15 @@ type File = { content: string };
 })
 export class GitlabService {
   private token: string;
+  private baseURL: string;
   private options: {};
   public isLoading$ = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) {
-    this.token = environment.gitProvider.token;
+    this.token = localStorage.getItem('gitToken');
+    if (!this.token) {
+      console.warn('You should set your gitToken in localStorage using URL param');
+    }
     this.options = { headers: new HttpHeaders().set('Authorization', `Bearer ${this.token}`) };
   }
 
@@ -84,7 +88,7 @@ export class GitlabService {
       }
     }`;
     return this.http.post<GraphQLResponse<{ project: Project }>>(
-      environment.gitProvider.baseUrl + environment.gitProvider.graphQLPath,
+      this.baseURL + environment.gitProvider.graphQLPath,
       { query },
       this.options
     ).pipe(map(result => result?.data?.project));
@@ -92,21 +96,21 @@ export class GitlabService {
 
   private commitsDiff$(projectId: string, sourceBranch: string, targetBranch: string): Observable<Comparison> {
     return this.http.get<Comparison>(
-      `${environment.gitProvider.baseUrl}${environment.gitProvider.restPath}/projects/${projectId}/repository/compare?from=${targetBranch}&to=${sourceBranch}`,
+      `${this.baseURL}${environment.gitProvider.restPath}/projects/${projectId}/repository/compare?from=${targetBranch}&to=${sourceBranch}`,
       this.options
     );
   }
 
   private fileContent$(projectId: string, filePath: string, branchName: string): Observable<string> {
    return this.http.get<File>(
-     `${environment.gitProvider.baseUrl + environment.gitProvider.restPath}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}?ref=${branchName}`,
+     `${this.baseURL + environment.gitProvider.restPath}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}?ref=${branchName}`,
      this.options
    ).pipe(map(result => atob(result.content)));
   }
 
   private diffIsBPMN = (diff: Diff) => /(.*)\.bpmn/.test(diff.old_path) && /(.*)\.bpmn/.test(diff.new_path);
 
-  public setToken(token: string): void {
-    this.token = token;
+  public setbaseURL(baseURL: string): void {
+    this.baseURL = baseURL;
   }
 }

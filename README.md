@@ -11,7 +11,7 @@ npm i
 cp ./src/environments/environment.secret.example.ts ./src/environments/environment.secret.ts
 ```
 
-Then generate a gitlab token and add it to your `environment.secret.example.ts`.
+Then generate a gitlab token and add it to your localStorage at the variable `gitToken`
 
 ## Run locally
 
@@ -27,6 +27,7 @@ Then run the local server with
 npm run start
 ```
 
-Visit http://localhost:4200/?mergeRequestId={YOUR_PULL_REQUEST_ID}&projectFullPath=${YOUR_PROJECT_FULL_PATH} to see the diff
 
-URL example on BEL: http://localhost:4200/?mergeRequestId=5897&projectFullPath=bel-reloaded%2Fmothership
+Visit http://localhost:4200/?mergeRequestId={YOUR_PULL_REQUEST_ID}&repositoryPath=${YOUR_PROJECT_FULL_PATH}&gitlabBaseUrl=${YOUR_GITLAB_BASE_URL} to see the diff
+
+URL example on BEL: http://localhost:4200/?mergeRequestId=5897&repositoryPath=bel-reloaded%2Fmothership&gitlabBaseUrl=https:%2F%2Frepo1.laforge.cloud.bpifrance.fr
