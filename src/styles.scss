@@ -11,10 +11,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   fill: red !important;
 }
 
-._layoutChanged:not(.djs-connection) .djs-visual > :nth-child(1) {
-  fill: yellow !important;
-}
-
 ._changed:not(.djs-connection) .djs-visual > :nth-child(1) {
   fill: orange !important;
 }
