@@ -4,7 +4,7 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 ._added:not(.djs-connection) .djs-visual > :nth-child(1) {
-  fill: green !important;
+  fill: greenyellow !important;
 }
 
 ._removed:not(.djs-connection) .djs-visual > :nth-child(1) {
