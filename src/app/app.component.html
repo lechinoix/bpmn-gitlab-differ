@@ -4,11 +4,9 @@
   </nav>
   <div class="sidebar">
     <ng-container *ngIf="pageReady | async ; else loader">
-      <ul *ngFor="let filePath of availableBpmnFilePaths">
-        <li>
-          <button (click)="changeSelectedFilePath(filePath)">{{ filePath | extractFilename }}</button>
-        </li>
-      </ul>
+      <div *ngFor="let filePath of availableBpmnFilePaths">
+        <button (click)="changeSelectedFilePath(filePath)">{{ filePath | extractFilename }}</button>
+      </div>
     </ng-container>
   </div>
   <app-bpmn-viewer class="diff-viewer" [bpmn]="selectedDiff.oldVersion" [version]="oldVersion"></app-bpmn-viewer>

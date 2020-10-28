@@ -1,5 +1,26 @@
-<ul>
-    <li *ngFor="let diff of diffList">
-        name: {{ diff.name }}, change: {{ diff.changeType }}, type: {{ diff.$type }}
-    </li>
-</ul>
+<table mat-table [dataSource]="diffList" class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="changeType">
+        <th mat-header-cell *matHeaderCellDef> Change Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.changeType}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

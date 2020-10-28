@@ -8,6 +8,7 @@ import { BPMNDiffService } from '../bpmn-diff.service';
 })
 export class BpmnDiffReaderComponent implements OnInit {
   diffList: any[] = [];
+  displayedColumns: string[] = ['name', 'changeType', 'type'];
 
   constructor(
     public bpmnDiffService: BPMNDiffService,
