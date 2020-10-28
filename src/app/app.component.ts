@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BPMNDiffs, GitlabService} from './components/gitlab/gitlab.service';
+import { BPMNDiffs, BPMNDiff, GitlabService} from './components/gitlab/gitlab.service';
 import {BPMNDiffService} from './components/bpmn/bpmn-diff.service';
 import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -18,10 +18,10 @@ export class AppComponent {
   newVersion = 'new';
   pageReady: Observable<boolean>;
 
-  get selectedDiff(): [string, string] | null {
+  get selectedDiff(): BPMNDiff {
     return this.bpmnDiffs.hasOwnProperty(this.selectedFilePath)
       ? this.bpmnDiffs[this.selectedFilePath]
-      : ['', ''];
+      : { oldVersion: '', newVersion: '' };
   }
 
   get availableBpmnFilePaths(): string[] {

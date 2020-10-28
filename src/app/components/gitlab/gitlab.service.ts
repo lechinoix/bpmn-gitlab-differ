@@ -20,8 +20,12 @@ type Diff = {
   renamed_file: boolean,
   deleted_file: boolean
 };
+export type BPMNDiff = {
+  oldVersion: string,
+  newVersion: string
+};
 export type BPMNDiffs = {
-  [filename: string]: [string, string]
+  [filename: string]: BPMNDiff
 };
 type GraphQLResponse<T> = { data: T };
 type File = { content: string };
@@ -59,14 +63,17 @@ export class GitlabService {
       switchMap(([project, comparison]) => forkJoin(
         [...comparison.diffs.filter(this.diffIsBPMN).map(diff => forkJoin([
           of(diff.new_path),
-          this.fileContent$(project.id, diff.old_path, project.mergeRequest.sourceBranch),
-          this.fileContent$(project.id, diff.new_path, project.mergeRequest.targetBranch)
+          this.fileContent$(project.id, diff.old_path, project.mergeRequest.targetBranch),
+          this.fileContent$(project.id, diff.new_path, project.mergeRequest.sourceBranch)
         ])
       )])),
       map((bpmnDiffs) =>
         bpmnDiffs.reduce((acc, [filePath, ...diff]) => ({
           ...acc,
-          [filePath]: diff
+          [filePath]: {
+            oldVersion: diff[0],
+            newVersion: diff[1]
+          }
         }),
         {}
       )),

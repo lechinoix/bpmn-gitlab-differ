@@ -24,9 +24,9 @@
   display: flex;
   align-items: stretch;
   padding: 20px;
-  grid-area: content-old;
+  grid-area: content-new;
   &:first-of-type {
-    grid-area: content-new;
+    grid-area: content-old;
   }
 }
 

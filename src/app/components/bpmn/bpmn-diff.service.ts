@@ -5,6 +5,7 @@ import {BehaviorSubject, forkJoin, from} from 'rxjs';
 
 import { diff } from 'bpmn-js-differ';
 import BpmnModdle from 'bpmn-moddle';
+import { BPMNDiff } from '../gitlab/gitlab.service';
 
 type Diff = {
   $type: string,
@@ -20,10 +21,13 @@ export class BPMNDiffService {
   bpmnToCompare?: any[] = [null, null];
   diffResult$: BehaviorSubject<Diff[]> = new BehaviorSubject([]);
 
-  async setBpmns(bpmns: [string, string]): Promise<void> {
-    if (bpmns.every(Boolean)) {
+  async setBpmns(bpmns: BPMNDiff): Promise<void> {
+    if (Object.values(bpmns).every(Boolean)) {
       forkJoin(
-        bpmns.map((bpmn) => from(this.parseBpmn(bpmn)))
+        [
+          from(this.parseBpmn(bpmns.oldVersion)),
+          from(this.parseBpmn(bpmns.newVersion))
+        ]
       ).subscribe((parsedBpmns) => {
         this.bpmnToCompare = parsedBpmns;
         this.setDiffResult();
