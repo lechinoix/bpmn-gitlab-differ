@@ -574,8 +574,8 @@ class GitlabService {
             this.commitsDiff$(project.id, project.mergeRequest.sourceBranch, project.mergeRequest.targetBranch)
         ])), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["switchMap"])(([project, comparison]) => Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["forkJoin"])([...comparison.diffs.filter(this.diffIsBPMN).map(diff => Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["forkJoin"])([
                 Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["of"])(diff.new_path),
-                this.fileContent$(project.id, diff.old_path, project.mergeRequest.sourceBranch),
-                this.fileContent$(project.id, diff.new_path, project.mergeRequest.targetBranch)
+                this.fileContent$(project.id, diff.old_path, project.mergeRequest.targetBranch),
+                this.fileContent$(project.id, diff.new_path, project.mergeRequest.sourceBranch)
             ]))])), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((bpmnDiffs) => bpmnDiffs.reduce((acc, [filePath, ...diff]) => (Object.assign(Object.assign({}, acc), { [filePath]: {
                 oldVersion: diff[0],
                 newVersion: diff[1]
