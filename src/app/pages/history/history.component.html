@@ -9,12 +9,8 @@
     <label>Process Definition Key: </label>
     <input placeholder="definition key" [value]="processKey" (change)="setProcessKey($event.target.value)" />
 
-    <label>Process Instance Id: </label>
-    <input
-      placeholder="process instance id"
-      [value]="processInstanceId"
-      (change)="setProcessInstanceId($event.target.value)"
-    />
+    <label>Business Key: </label>
+    <input placeholder="business key" [value]="businessKey" (change)="setBusinessKey($event.target.value)" />
 
     <button (click)="retrieveInformations()">Submit</button>
   </div>

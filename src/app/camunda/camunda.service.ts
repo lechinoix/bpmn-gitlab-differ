@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BpmnXmlResponse } from './camunda.types';
+import { BpmnXmlResponse, ProcessInstance } from './camunda.types';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +37,14 @@ export class CamundaService {
     return this.http.post<any>(
       `${this.baseApiUrl}/history/activity-instance`,
       { processInstanceId },
+      this.getAuthorizationHeaders()
+    );
+  };
+
+  retrieveProcessInstance = (businessKey: string, processDefinitionKey?: string) => {
+    return this.http.post<ProcessInstance[]>(
+      `${this.baseApiUrl}/history/process-instance`,
+      { processInstanceBusinessKey: businessKey, processDefinitionKey },
       this.getAuthorizationHeaders()
     );
   };
