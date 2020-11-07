@@ -10,13 +10,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BpmnModule } from './components/bpmn/bpmn.module';
 import {ExtractFilenamePipe} from './pipes/filename-extractor.pipe';
+import { HistoryComponent } from './pages/history/history.component';
 import { DifferComponent } from './pages/differ/differ.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ExtractFilenamePipe
     ExtractFilenamePipe,
+    HistoryComponent,
     DifferComponent
   ],
   imports: [
