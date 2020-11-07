@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CamundaService } from '../../camunda/camunda.service';
-import { BpmnXmlResponse, ProcessInstance } from '../../camunda/camunda.types';
+import { BpmnXmlResponse, Incident, ProcessInstance } from '../../camunda/camunda.types';
 
 @Component({
   selector: 'app-history',
@@ -11,6 +11,7 @@ export class HistoryComponent {
   bpmn: string = null;
   processInstance: ProcessInstance = null;
   history: any = null;
+  incidents: Incident[];
 
   get username(): string {
     return this.camundaService.username;
@@ -67,6 +68,7 @@ export class HistoryComponent {
       this.camundaService
         .retrieveExecution(processInstance.id)
         .subscribe((execution: any) => (this.history = execution));
+      this.camundaService.retrieveIncidents(processInstance.id).subscribe(incidents => (this.incidents = incidents));
     });
   };
 

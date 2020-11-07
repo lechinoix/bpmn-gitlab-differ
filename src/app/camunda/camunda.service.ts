@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BpmnXmlResponse, ProcessInstance } from './camunda.types';
+import { BpmnXmlResponse, Incident, ProcessInstance } from './camunda.types';
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +54,13 @@ export class CamundaService {
       `${this.baseApiUrl}/history/process-instance/${processInstanceId}`,
       this.getAuthorizationHeaders()
     );
+  };
+
+  retrieveIncidents = (processInstanceId: string) => {
+    return this.http.get<Incident[]>(`${this.baseApiUrl}/history/incident`, {
+      ...this.getAuthorizationHeaders(),
+      params: { processInstanceId }
+    });
   };
 
   getAuthorizationHeaders = () => ({

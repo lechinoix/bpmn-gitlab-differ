@@ -2,6 +2,7 @@ import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/
 import NavigatedViewer from 'bpmn-js/lib/NavigatedViewer';
 import { BPMNDiffService } from '../bpmn-diff.service';
 import { InteractionEvent } from '../../../bpmnjs.types';
+import { Incident } from 'src/app/camunda/camunda.types';
 
 @Component({
   selector: 'app-history-viewer',
@@ -11,6 +12,7 @@ import { InteractionEvent } from '../../../bpmnjs.types';
 export class HistoryViewerComponent implements AfterViewInit {
   bpmnValue: string;
   historyValue: any = null;
+  private _incidents: Incident[] = null;
 
   @Input() set bpmn(value: string) {
     this.bpmnValue = value;
@@ -21,6 +23,11 @@ export class HistoryViewerComponent implements AfterViewInit {
     this.clearHistory();
     this.historyValue = value;
     this.updateHistory();
+  }
+
+  @Input() set incidents(incidents: Incident[]) {
+    this._incidents = incidents;
+    this.handleIncidents();
   }
 
   @Output() calledElement = new EventEmitter<string>();
@@ -70,6 +77,26 @@ export class HistoryViewerComponent implements AfterViewInit {
     this.historyValue.forEach(element => {
       const state = element.endTime ? 'finished' : 'started';
       this.removeVisualToElement(element.activityId, state);
+    });
+  };
+
+  handleIncidents = () => {
+    if (this._incidents == null) {
+      return;
+    }
+
+    const overlays = this.viewer.get('overlays');
+
+    this._incidents.forEach(incident => {
+      if (incident.open) {
+        overlays.add(incident.activityId, {
+          position: {
+            top: -5,
+            left: -5
+          },
+          html: '<div class="incident">!</div>'
+        });
+      }
     });
   };
 

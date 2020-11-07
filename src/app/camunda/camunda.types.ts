@@ -24,3 +24,28 @@ export interface ProcessInstance {
   tenantId?: any;
   state: string;
 }
+
+export interface Incident {
+  id: string;
+  processDefinitionKey: string;
+  processDefinitionId: string;
+  processInstanceId: string;
+  executionId: string;
+  rootProcessInstanceId: string;
+  createTime: Date;
+  endTime?: any;
+  removalTime?: any;
+  incidentType: string;
+  activityId: string;
+  failedActivityId: string;
+  causeIncidentId: string;
+  rootCauseIncidentId: string;
+  configuration: string;
+  historyConfiguration: string;
+  incidentMessage: string;
+  tenantId?: any;
+  jobDefinitionId: string;
+  open: boolean;
+  deleted: boolean;
+  resolved: boolean;
+}
