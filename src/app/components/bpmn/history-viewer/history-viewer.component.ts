@@ -18,6 +18,7 @@ export class HistoryViewerComponent implements AfterViewInit {
   }
 
   @Input() set history(value: any) {
+    this.clearHistory();
     this.historyValue = value;
     this.updateHistory();
   }
@@ -61,11 +62,30 @@ export class HistoryViewerComponent implements AfterViewInit {
     });
   }
 
+  clearHistory = () => {
+    if (this.historyValue === null) {
+      return;
+    }
+
+    this.historyValue.forEach(element => {
+      const state = element.endTime ? 'finished' : 'started';
+      this.removeVisualToElement(element.activityId, state);
+    });
+  };
+
   applyVisualToElement = (elementId: string, effectClass: string): void => {
     try {
       this.viewer.get('canvas').addMarker(elementId, effectClass);
     } catch (e) {
       console.warn(e);
+    }
+  };
+
+  removeVisualToElement = (elementId: string, effectClass: string): void => {
+    try {
+      this.viewer.get('canvas').removeMarker(elementId, effectClass);
+    } catch (e) {
+      // noop
     }
   };
 }
