@@ -49,6 +49,13 @@ export class CamundaService {
     );
   };
 
+  retrieveProcessInstanceWithProcessInstanceId = (processInstanceId: string) => {
+    return this.http.get<ProcessInstance>(
+      `${this.baseApiUrl}/history/process-instance/${processInstanceId}`,
+      this.getAuthorizationHeaders()
+    );
+  };
+
   getAuthorizationHeaders = () => ({
     headers: {
       Authorization: this.getBasicPassword(),

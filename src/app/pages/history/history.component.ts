@@ -9,6 +9,7 @@ import { BpmnXmlResponse, ProcessInstance } from '../../camunda/camunda.types';
 })
 export class HistoryComponent {
   bpmn: string = null;
+  processInstance: ProcessInstance = null;
   history: any = null;
 
   get username(): string {
@@ -47,18 +48,34 @@ export class HistoryComponent {
   retrieveInformations(): void {
     this.camundaService
       .retrieveProcessInstance(this.businessKey, this.processKey)
-      .subscribe((processInstances: ProcessInstance[]) => {
-        this.camundaService.retrieveBpmn(this.processKey).subscribe((xmlResponse: BpmnXmlResponse) => {
-          this.bpmn = xmlResponse.bpmn20Xml;
-          this.camundaService
-            .retrieveExecution(processInstances[0].id)
-            .subscribe((execution: any) => (this.history = execution));
-        });
-      });
+      .subscribe(processInstances => this.handleProcessInstance(processInstances[0]));
   }
+
+  retrieveInformationsWithProcessInstanceId(processInstanceId: string): void {
+    this.camundaService
+      .retrieveProcessInstanceWithProcessInstanceId(processInstanceId)
+      .subscribe(this.handleProcessInstance);
+  }
+
+  handleProcessInstance = (processInstance: ProcessInstance) => {
+    this.processInstance = processInstance;
+
+    this.setProcessKey(processInstance.processDefinitionKey);
+
+    this.camundaService.retrieveBpmn(this.processKey).subscribe((xmlResponse: BpmnXmlResponse) => {
+      this.bpmn = xmlResponse.bpmn20Xml;
+      this.camundaService
+        .retrieveExecution(processInstance.id)
+        .subscribe((execution: any) => (this.history = execution));
+    });
+  };
 
   onCalledElement(calledElement: string): void {
     this.setProcessKey(calledElement);
     this.retrieveInformations();
   }
+
+  viewParent = () => {
+    this.retrieveInformationsWithProcessInstanceId(this.processInstance.superProcessInstanceId);
+  };
 }

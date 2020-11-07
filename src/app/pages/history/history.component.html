@@ -13,6 +13,9 @@
     <input placeholder="business key" [value]="businessKey" (change)="setBusinessKey($event.target.value)" />
 
     <button (click)="retrieveInformations()">Submit</button>
+    <button *ngIf="processInstance && processInstance.superProcessInstanceId" (click)="viewParent()">
+      View Parent
+    </button>
   </div>
 
   <app-history-viewer
