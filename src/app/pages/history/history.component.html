@@ -15,5 +15,10 @@
     <button (click)="retrieveInformations()">Submit</button>
   </div>
 
-  <app-history-viewer class="history-viewer" [bpmn]="bpmn" [history]="history"></app-history-viewer>
+  <app-history-viewer
+    class="history-viewer"
+    [bpmn]="bpmn"
+    [history]="history"
+    (calledElement)="onCalledElement($event)"
+  ></app-history-viewer>
 </div>

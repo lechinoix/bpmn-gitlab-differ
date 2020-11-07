@@ -56,4 +56,9 @@ export class HistoryComponent {
         });
       });
   }
+
+  onCalledElement(calledElement: string): void {
+    this.setProcessKey(calledElement);
+    this.retrieveInformations();
+  }
 }

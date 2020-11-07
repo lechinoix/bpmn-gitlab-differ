@@ -1,6 +1,7 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import NavigatedViewer from 'bpmn-js/lib/NavigatedViewer';
 import { BPMNDiffService } from '../bpmn-diff.service';
+import { InteractionEvent } from '../../../bpmnjs.types';
 
 @Component({
   selector: 'app-history-viewer',
@@ -21,6 +22,8 @@ export class HistoryViewerComponent implements AfterViewInit {
     this.updateHistory();
   }
 
+  @Output() calledElement = new EventEmitter<string>();
+
   viewer: any;
 
   constructor(public bpmnDiffService: BPMNDiffService) {}
@@ -28,6 +31,14 @@ export class HistoryViewerComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.viewer = new NavigatedViewer({
       container: `.history-viewer`
+    });
+
+    const eventBus = this.viewer.get('eventBus');
+
+    eventBus.on('element.click', (event: InteractionEvent) => {
+      if (event.element.type === 'bpmn:CallActivity') {
+        this.calledElement.emit(event.element.businessObject.calledElement);
+      }
     });
   }
 
