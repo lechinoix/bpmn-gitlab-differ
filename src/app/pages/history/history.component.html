@@ -6,6 +6,9 @@
     <label>Password: </label>
     <input type="password" placeholder="pwd" [value]="password" (change)="setPassword($event.target.value)" />
 
+    <label>Base Camunda api url: </label>
+    <input placeholder="camunda url" [value]="baseApiUrl" (change)="setBaseApiUrl($event.target.value)" />
+
     <label>Process Definition Key: </label>
     <input placeholder="definition key" [value]="processKey" (change)="setProcessKey($event.target.value)" />
 

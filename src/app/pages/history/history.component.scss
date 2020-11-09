@@ -1,4 +1,7 @@
 .sidebar {
+  display: flex;
+  flex-direction: column;
+
   grid-area: sidebar;
   overflow: scroll;
   border-right: 1px #ccc solid;

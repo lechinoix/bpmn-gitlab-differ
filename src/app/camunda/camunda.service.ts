@@ -6,7 +6,15 @@ import { BpmnXmlResponse, Incident, ProcessInstance } from './camunda.types';
   providedIn: 'root'
 })
 export class CamundaService {
-  baseApiUrl = 'https://localhost:8080/workflow/camunda/engine-rest';
+  private defaultCamundaApiUrl = 'https://localhost:8080/workflow/camunda/engine-rest';
+
+  set baseApiUrl(baseApiUrl: string) {
+    localStorage.baseCamundaApiUrl = baseApiUrl;
+  }
+
+  get baseApiUrl(): string {
+    return localStorage.baseCamundaApiUrl || this.defaultCamundaApiUrl;
+  }
 
   set username(value: string) {
     localStorage.camundaUsername = value;

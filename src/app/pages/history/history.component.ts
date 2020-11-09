@@ -28,6 +28,15 @@ export class HistoryComponent {
   setPassword(value: string): void {
     this.camundaService.password = value;
   }
+
+  get baseApiUrl(): string {
+    return this.camundaService.baseApiUrl;
+  }
+
+  setBaseApiUrl(value: string): void {
+    this.camundaService.baseApiUrl = value;
+  }
+
   get processKey(): string {
     return localStorage.processKey || '';
   }
