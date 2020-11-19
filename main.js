@@ -47,12 +47,10 @@ const routes = [
     {
         path: 'differ',
         component: _pages_differ_differ_component__WEBPACK_IMPORTED_MODULE_2__["DifferComponent"],
-        pathMatch: 'full'
     },
     {
         path: 'history',
         component: _pages_history_history_component__WEBPACK_IMPORTED_MODULE_3__["HistoryComponent"],
-        pathMatch: 'full'
     },
     {
         path: '',
