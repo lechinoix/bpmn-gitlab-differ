@@ -1,18 +1,4 @@
-<div class="container">
-  <nav class="navbar">
-    <span>BPMN Gitlab diff</span>
-  </nav>
-  <div class="sidebar">
-    <ng-container *ngIf="pageReady | async ; else loader">
-      <div *ngFor="let filePath of availableBpmnFilePaths">
-        <button (click)="changeSelectedFilePath(filePath)">{{ filePath | extractFilename }}</button>
-      </div>
-    </ng-container>
-  </div>
-  <app-bpmn-viewer class="diff-viewer" [bpmn]="selectedDiff.oldVersion" [version]="oldVersion"></app-bpmn-viewer>
-  <app-bpmn-viewer class="diff-viewer" [bpmn]="selectedDiff.newVersion" [version]="newVersion"></app-bpmn-viewer>
-  <app-bpmn-diff-reader class="diff-reader"></app-bpmn-diff-reader>
-  <ng-template #loader>
-    <p>It is loading</p>
-  </ng-template>
-</div>
+<nav class="navbar">
+  <span>BPMN Gitlab diff</span>
+</nav>
+<router-outlet></router-outlet>
