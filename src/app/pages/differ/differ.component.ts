@@ -43,14 +43,14 @@ export class DifferComponent {
 
   setBpmnDiffs = (bpmnDiffs: BPMNDiffs): void => {
     this.bpmnDiffs = bpmnDiffs;
-  };
+  }
 
   changeSelectedFilePath = (filePath: string): void => {
     this.selectedFilePath = filePath;
     this.bpmnDiffService.setBpmns(this.bpmnDiffs[filePath]);
-  };
+  }
 
   setGitToken = (gitToken: string) => {
     localStorage.gitToken = gitToken;
-  };
+  }
 }

@@ -2,7 +2,7 @@
 
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap, catchError } from 'rxjs/operators';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -37,6 +37,7 @@ export class GitlabService {
   private token: string;
   private baseURL: string;
   private options: {};
+
   public isLoading$ = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) {
@@ -109,10 +110,13 @@ export class GitlabService {
   }
 
   private fileContent$(projectId: string, filePath: string, branchName: string): Observable<string> {
-   return this.http.get<File>(
-     `${this.baseURL + environment.gitProvider.restPath}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}?ref=${branchName}`,
-     this.options
-   ).pipe(map(result => atob(result.content)));
+    return this.http.get<File>(
+      `${this.baseURL + environment.gitProvider.restPath}/projects/${projectId}/repository/files/${encodeURIComponent(filePath)}?ref=${branchName}`,
+      this.options
+    ).pipe(
+	    map(result => atob(result.content)),
+      catchError((err) => of(null))
+    );
   }
 
   private diffIsBPMN = (diff: Diff) => /(.*)\.bpmn/.test(diff.old_path) && /(.*)\.bpmn/.test(diff.new_path);

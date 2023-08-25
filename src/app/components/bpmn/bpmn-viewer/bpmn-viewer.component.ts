@@ -35,7 +35,11 @@ export class BpmnViewerComponent implements AfterViewInit {
     if (this.viewer == null) {
       return;
     }
-    await this.viewer.importXML(bpmn);
+    try {
+      await this.viewer.importXML(bpmn);
+    } catch (e) {
+      this.viewer.clear();
+    }
     this.viewer.get('canvas').zoom('fit-viewport');
   }
 
